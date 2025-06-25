@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from typing import Union
+from fastapi.encoders import jsonable_encoder
 
 app = FastAPI()
 
@@ -28,3 +29,25 @@ def saludito(nombre: str):
 @app.get("/union")
 def union(nombre: str, apellido: Union[str, None] = None):
     return {"mensaje": "Hola," + nombre + " " + (apellido if apellido else "")}
+
+# Debemos decorar el método y un endpoint
+@app.get("/numeros")
+#creamos un método que se llama metodoRoot
+def dameNumeros():
+    listaNumeros = [1, 2, 3, 4, 5]
+    salida = []
+    for num in listaNumeros:
+        elemento = {"numero": num}
+        salida.append(elemento)
+    return{"numeros": salida}    
+
+@app.get("/nombres")
+#creamos un método que se llama metodoRoot
+def dameNumeros():
+    listaNombres = ["rafa", "antonio", "paula", "sole", "marta"]
+    salida = []
+    for nombres in listaNombres:
+        elemento = {"nombres": nombres}
+        codificado = jsonable_encoder(elemento)
+        salida.append(codificado)
+    return{"nombres": salida}   
